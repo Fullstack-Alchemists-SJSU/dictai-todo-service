@@ -34,7 +34,11 @@ class OpenAIService {
       });
 
       // Parse the response and structure it into TodoItems
-      const todos = this.parseOpenAIResponse(response.choices[0].message.content);
+    const messageContent = response.choices[0].message.content;
+    if (!messageContent) {
+    throw new Error('OpenAI response has no content');
+    }
+    const todos = this.parseOpenAIResponse(messageContent);
       return todos;
     } catch (error) {
       console.error('OpenAI extraction error:', error);

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { TranscriptionResponse } from '../types/toDoTypes';
 
 class VapiService {
   private apiKey: string;
