@@ -2,32 +2,47 @@ import axios from 'axios';
 import { TranscriptionResponse } from '../types/toDoTypes';
 
 class VapiService {
+  private baseUrl = 'https://api.vapi.ai';
   private apiKey: string;
-  private baseUrl: string;
 
   constructor() {
-    this.apiKey = process.env.VAPI_API_KEY!;
-    this.baseUrl = 'https://api.vapi.ai/v1';
+    this.apiKey = process.env.VAPI_API_KEY || '';
+    if (!this.apiKey) {
+      throw new Error('VAPI_API_KEY environment variable is required');
+    }
   }
 
-  async transcribeAudio(audioUrl: string): Promise<TranscriptionResponse> {
+  async getCall(callId: string) {
     try {
-      const response = await axios.post(`${this.baseUrl}/transcribe`, {
-        audio_url: audioUrl
+      const response = await axios.get(`${this.baseUrl}/call/${callId}`, {
+        headers: {
+          'Authorization': `Bearer ${this.apiKey}`
+        }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching call data:', error);
+      throw error;
+    }
+  }
+
+  async transcribeAudio(callId: string): Promise<TranscriptionResponse> {
+    try {
+      const response = await axios.post(`${this.baseUrl}/call/${callId}`, {
       }, {
         headers: {
           'Authorization': `Bearer ${this.apiKey}`,
-          'Content-Type': 'application/json'
         }
       });
 
+      const transcript = response.data.transcript || response.data.artifact?.transcript;
+
       return {
-        text: response.data.text,
-        duration: response.data.duration
+        transcript: transcript || '',
       };
     } catch (error) {
-      console.error('Vapi transcription error:', error);
-      throw new Error('Failed to transcribe audio');
+      console.error('Vapi transcript fetch error:', error);
+      throw new Error('Failed to fetch transcript');
     }
   }
 }

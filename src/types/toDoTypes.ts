@@ -8,9 +8,9 @@ export interface TodoItem {
   }
   
   export interface TranscriptionResponse {
-    text: string;
-    duration: number;
+    transcript: string;
   }
+  
   
   export interface TodoExtractionResponse {
     todos: TodoItem[];

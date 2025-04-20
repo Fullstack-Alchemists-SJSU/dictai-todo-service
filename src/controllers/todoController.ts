@@ -11,13 +11,13 @@ class TodoController {
       const transcription = await vapiService.transcribeAudio(audioUrl);
 
       // 2. Extract todos using OpenAI
-      const todos = await openAIService.extractTodos(transcription.text);
+      const todos = await openAIService.extractTodos(transcription.transcript);
 
       res.json({
         success: true,
         data: {
           todos,
-          transcription: transcription.text
+          transcription: transcription.transcript
         }
       });
     } catch (error) {
