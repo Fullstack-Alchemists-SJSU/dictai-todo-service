@@ -2,5 +2,5 @@ import { Router } from 'express';
 import todoController from '../controllers/todoController';
 
 const router = Router();
-router.post('/voice', todoController.extractTodosFromAudio);
+router.post('/create', todoController.extractTodosFromAudio);
 export default router;

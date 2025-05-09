@@ -1,19 +1,16 @@
-import vapiService from './services/vapiService';
 import openAIService from './services/openAIService';
 
 async function testFullFlow() {
   try {
-    // Replace with an actual call ID from your Vapi account
-    const callId = '8ebb6d93-5012-45eb-bc44-bb433ab3f3e0';
-    console.log('Testing full flow...');
-    
-    // Step 1: Get call data from Vapi
-    console.log('\n1. Fetching call data from Vapi...');
-    const callData = await vapiService.getCall(callId);
-    console.log('Call data received successfully');
     
     // Step 2: Get transcript from call data
-    const transcript = callData.transcript || callData.artifact?.transcript;
+    const transcript = `
+    AI: How was your day?
+    User: My day was good. I actually got an offer letter today for the role of software engineer for a company called Espresso AI. So I'm really excited for that. I'm joining on June second. 
+    AI: That's fantastic news. Congratulations on receiving the offer for the software engineer role at Espresso AI. It sounds like an exciting opportunity. How are you feeling about starting this new chapter in your career?
+    User: It's very exciting. I mean, uh, the market situation is very tough right now. So, uh, it's, uh, reassuring feeling. And, also, I'm pretty excited to start the new new team, new work, And, yeah, all in all, feeling really good. 
+    AI: Absolutely. It's completely understandable to feel reassured and excited about this new opportunity. Especially during uncertain times in the job market. Starting with a new team and engaging in new projects can be invigorating. Is there anything specific you're looking forward to as you prepare to join Espresso AI?
+    `
     if (!transcript) {
       throw new Error('No transcript found in call data');
     }

@@ -1,23 +1,19 @@
 import { Request, Response } from 'express';
-import vapiService from '../services/vapiService';
 import openAIService from '../services/openAIService';
 
 class TodoController {
   async extractTodosFromAudio(req: Request, res: Response) {
     try {
-      const { audioUrl } = req.body;
-
-      // 1. Transcribe audio using Vapi
-      const transcription = await vapiService.transcribeAudio(audioUrl);
+      const { transcript } = req.body;
 
       // 2. Extract todos using OpenAI
-      const todos = await openAIService.extractTodos(transcription.transcript);
+      const todos = await openAIService.extractTodos(transcript);
 
       res.json({
         success: true,
         data: {
           todos,
-          transcription: transcription.transcript
+          transcription: transcript
         }
       });
     } catch (error) {
